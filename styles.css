@@ -110,6 +110,7 @@ header p {
 }
 
 .btn-primary {
+    /* Same as .btn background-color for clarity */
     background-color: var(--primary-color);
 }
 
