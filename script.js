@@ -146,17 +146,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const margin = parseFloat(marginSizeInput.value) || 0;
             const borderWidth = parseFloat(borderWidthInput.value) || 0;
             const borderColor = borderColorInput.value;
-            const compressionQuality = getCompressionQuality();
             
             // Convert margin from mm to points (1 mm = 2.83465 points)
             const marginPt = margin * 2.83465;
             
-            // Process images
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
                 const imageBytes = await readFileAsArrayBuffer(file);
                 
-                // Add page based on settings
                 let image;
                 try {
                     if (file.type === 'image/jpeg' || file.type === 'image/jpg') {
@@ -164,7 +161,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     } else if (file.type === 'image/png') {
                         image = await pdfDoc.embedPng(imageBytes);
                     } else {
-                        // Try to embed as JPEG by default
                         image = await pdfDoc.embedJpg(imageBytes);
                     }
                 } catch (e) {
@@ -172,27 +168,22 @@ document.addEventListener('DOMContentLoaded', function() {
                     continue;
                 }
                 
-                const pageSize = getPageSize(image);
-                const page = pdfDoc.addPage(pageSize);
-                
-                // Calculate dimensions with margin
-                const pageWidth = page.getWidth();
-                const pageHeight = page.getHeight();
+                const [pageWidth, pageHeight] = getPageSize(image);
+                const page = pdfDoc.addPage([pageWidth, pageHeight]);
                 
                 const contentWidth = pageWidth - (2 * marginPt);
                 const contentHeight = pageHeight - (2 * marginPt);
                 
                 // Draw border if enabled
                 if (borderStyleSelect.value !== 'none' && borderWidth > 0) {
-                    drawBorder(page, marginPt, pageWidth, pageHeight, contentWidth, contentHeight);
+                    drawBorder(page, marginPt, pageWidth, pageHeight, contentWidth, contentHeight, borderWidth, borderColor);
                 }
                 
-                // Draw image based on fit option
                 drawImage(page, image, marginPt, contentWidth, contentHeight);
                 
-                // Add page spread if enabled
+                // Page spread logic
                 if (pageSpreadSelect.value === 'double' && i < files.length - 1) {
-                    i++; // Skip next image as it will be on the same spread
+                    i++;
                     const nextFile = files[i];
                     const nextImageBytes = await readFileAsArrayBuffer(nextFile);
                     let nextImage;
@@ -206,7 +197,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             nextImage = await pdfDoc.embedJpg(nextImageBytes);
                         }
                         
-                        // Draw next image on the right half
                         const nextImageDims = nextImage.scaleToFit(
                             contentWidth / 2,
                             contentHeight
@@ -224,11 +214,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
             
-            // Save PDF
             const pdfBytes = await pdfDoc.save();
             const blob = new Blob([pdfBytes], { type: 'application/pdf' });
             
-            // Generate filename with current date if not specified
             let filename = outputNameInput.value.trim();
             if (!filename) {
                 const now = new Date();
@@ -236,7 +224,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 filename = `converted_images_${dateStr}.pdf`;
             }
             
-            // Ensure .pdf extension
             if (!filename.toLowerCase().endsWith('.pdf')) {
                 filename += '.pdf';
             }
@@ -254,135 +241,4 @@ document.addEventListener('DOMContentLoaded', function() {
     function readFileAsArrayBuffer(file) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = reject;
-            reader.readAsArrayBuffer(file);
-        });
-    }
-    
-    function getPageSize(image) {
-        const { PDFDocument } = PDFLib;
-        const orientation = pageOrientationSelect.value;
-        
-        let width, height;
-        
-        switch (pageSizeSelect.value) {
-            case 'a4':
-                width = 595.28; // A4 width in points
-                height = 841.89; // A4 height in points
-                break;
-            case 'letter':
-                width = 612; // Letter width in points
-                height = 792; // Letter height in points
-                break;
-            case 'legal':
-                width = 612; // Legal width in points
-                height = 1008; // Legal height in points
-                break;
-            case 'auto':
-            default:
-                // Use image dimensions (converted from pixels to points at 72 DPI)
-                width = image.width;
-                height = image.height;
-                break;
-        }
-        
-        // Adjust for orientation
-        if (orientation === 'portrait' || (orientation === 'auto' && height > width)) {
-            return [width, height];
-        } else {
-            return [height, width]; // Swap for landscape
-        }
-    }
-    
-    function drawBorder(page, margin, pageWidth, pageHeight, contentWidth, contentHeight) {
-        const { rgb } = PDFLib;
-        const borderColor = hexToRgb(borderColorInput.value);
-        const borderWidth = parseFloat(borderWidthInput.value) || 1;
-        
-        const borderOptions = {
-            x: margin,
-            y: margin,
-            width: contentWidth,
-            height: contentHeight,
-            borderWidth: borderWidth,
-            color: rgb(borderColor.r / 255, borderColor.g / 255, borderColor.b / 255),
-        };
-        
-        switch (borderStyleSelect.value) {
-            case 'dashed':
-                borderOptions.borderDashArray = [5, 5];
-                break;
-            case 'shadow':
-                // Draw shadow effect
-                page.drawRectangle({
-                    x: margin + 3,
-                    y: margin - 3,
-                    width: contentWidth,
-                    height: contentHeight,
-                    color: rgb(0.8, 0.8, 0.8),
-                    borderWidth: 0,
-                });
-                break;
-        }
-        
-        page.drawRectangle(borderOptions);
-    }
-    
-    function drawImage(page, image, margin, contentWidth, contentHeight) {
-        const fitOption = imageFitSelect.value;
-        
-        switch (fitOption) {
-            case 'fill':
-                // Fill the content area (may crop)
-                page.drawImage(image, {
-                    x: margin,
-                    y: margin,
-                    width: contentWidth,
-                    height: contentHeight,
-                });
-                break;
-                
-            case 'stretch':
-                // Stretch to fill (distorts aspect ratio)
-                page.drawImage(image, {
-                    x: margin,
-                    y: margin,
-                    width: contentWidth,
-                    height: contentHeight,
-                });
-                break;
-                
-            case 'fit':
-            default:
-                // Fit while maintaining aspect ratio
-                const dimensions = image.scaleToFit(contentWidth, contentHeight);
-                page.drawImage(image, {
-                    x: margin + (contentWidth - dimensions.width) / 2,
-                    y: margin + (contentHeight - dimensions.height) / 2,
-                    width: dimensions.width,
-                    height: dimensions.height,
-                });
-                break;
-        }
-    }
-    
-    function getCompressionQuality() {
-        switch (compressionSelect.value) {
-            case 'high': return 1.0;
-            case 'medium': return 0.7;
-            case 'low': return 0.4;
-            default: return 0.7;
-        }
-    }
-    
-    function hexToRgb(hex) {
-        // Convert #RRGGBB to {r, g, b}
-        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-        return result ? {
-            r: parseInt(result[1], 16),
-            g: parseInt(result[2], 16),
-            b: parseInt(result[3], 16)
-        } : { r: 0, g: 0, b: 0 };
-    }
-});
+            reader.onload = () => resol
