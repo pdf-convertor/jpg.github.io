@@ -12,8 +12,16 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('gizokraijaw.net',9509492,document.createElement('script'))</script>
-</html>
+
+    <!-- Monetag Script (move inside body, after content) -->
+    <script>
+        (function(d,z,s){
+            s.src='https://'+d+'/401/'+z;
+            try{(document.body||document.documentElement).appendChild(s)}
+            catch(e){}
+        })('gizokraijaw.net',9509492,document.createElement('script'));
+    </script>
+
     <div class="container">
         <header>
             <h1><i class="fas fa-file-pdf"></i> Image to PDF Converter</h1>
@@ -33,13 +41,14 @@
                 <h2><i class="fas fa-cog"></i> PDF Settings</h2>
                 
                 <div class="settings-grid">
+                    <!-- All your setting groups -->
                     <div class="setting-group">
                         <label for="pageSize">Page Size:</label>
                         <select id="pageSize">
-                            <option value="a4">A4 (210 × 297 mm)</option>
-                            <option value="letter">Letter (8.5 × 11 in)</option>
-                            <option value="legal">Legal (8.5 × 14 in)</option>
-                            <option value="auto">Auto (Fit to Image)</option>
+                            <option value="a4">A4</option>
+                            <option value="letter">Letter</option>
+                            <option value="legal">Legal</option>
+                            <option value="auto">Auto</option>
                         </select>
                     </div>
 
@@ -48,7 +57,7 @@
                         <select id="pageOrientation">
                             <option value="portrait">Portrait</option>
                             <option value="landscape">Landscape</option>
-                            <option value="auto">Auto (Based on Image)</option>
+                            <option value="auto">Auto</option>
                         </select>
                     </div>
 
@@ -82,7 +91,7 @@
                         <select id="imageFit">
                             <option value="fill">Fill Page</option>
                             <option value="fit" selected>Fit to Page</option>
-                            <option value="stretch">Stretch to Fill</option>
+                            <option value="stretch">Stretch</option>
                         </select>
                     </div>
 
@@ -140,6 +149,9 @@
         </div>
     </div>
 
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
