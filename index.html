@@ -3,74 +3,115 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PDF Converter</title>
+  <title>Image to PDF Converter</title>
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- Main CSS -->
   <link rel="stylesheet" href="style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet" />
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
-
   <div class="container">
     <header>
-      <h1><i class="fas fa-file-pdf"></i> PDF Converter</h1>
-      <p>Upload files to convert into PDF format easily</p>
+      <h1><i class="fas fa-file-pdf"></i> Image to PDF Converter</h1>
+      <p>Convert your images to high-quality PDFs with advanced customization options</p>
     </header>
 
-    <div class="upload-area">
-      <i class="fas fa-cloud-upload-alt"></i>
-      <h3>Click or Drag & Drop to Upload</h3>
-      <p>Supported formats: JPG, PNG, DOCX, etc.</p>
-    </div>
+    <main>
+      <div class="upload-area" id="dropArea">
+        <i class="fas fa-cloud-upload-alt"></i>
+        <h3>Drag & Drop Images Here</h3>
+        <p>or</p>
+        <button id="selectFiles" class="btn">Select Images</button>
+        <input type="file" id="fileInput" accept="image/*" multiple style="display: none" />
+      </div>
 
-    <div class="action-buttons">
-      <button class="btn btn-primary"><i class="fas fa-upload"></i> Upload</button>
-      <button class="btn btn-secondary"><i class="fas fa-file-pdf"></i> Convert to PDF</button>
-    </div>
-
-    <div class="settings-panel">
-      <h2><i class="fas fa-cogs"></i> Settings</h2>
-      <div class="settings-grid">
-        <div class="setting-group">
-          <label for="page-size">Page Size</label>
-          <select id="page-size">
-            <option value="A4">A4</option>
-            <option value="Letter">Letter</option>
-          </select>
-        </div>
-        <div class="setting-group">
-          <label for="orientation">Orientation</label>
-          <select id="orientation">
-            <option value="portrait">Portrait</option>
-            <option value="landscape">Landscape</option>
-          </select>
-        </div>
-        <div class="setting-group">
-          <label for="margin">Margin (px)</label>
-          <input type="number" id="margin" value="20" />
+      <div class="settings-panel">
+        <h2><i class="fas fa-cog"></i> PDF Settings</h2>
+        <div class="settings-grid">
+          <div class="setting-group">
+            <label for="pageSize">Page Size:</label>
+            <select id="pageSize">
+              <option value="a4">A4</option>
+              <option value="letter">Letter</option>
+              <option value="legal">Legal</option>
+              <option value="auto">Auto</option>
+            </select>
+          </div>
+          <div class="setting-group">
+            <label for="pageOrientation">Orientation:</label>
+            <select id="pageOrientation">
+              <option value="portrait">Portrait</option>
+              <option value="landscape">Landscape</option>
+              <option value="auto">Auto</option>
+            </select>
+          </div>
+          <div class="setting-group">
+            <label for="marginSize">Margin (mm):</label>
+            <input type="number" id="marginSize" min="0" max="50" value="10" />
+          </div>
+          <div class="setting-group">
+            <label for="borderStyle">Border Style:</label>
+            <select id="borderStyle">
+              <option value="none">None</option>
+              <option value="solid" selected>Solid Line</option>
+              <option value="dashed">Dashed Line</option>
+              <option value="shadow">Shadow Effect</option>
+            </select>
+          </div>
+          <div class="setting-group">
+            <label for="borderColor">Border Color:</label>
+            <input type="color" id="borderColor" value="#cccccc" />
+          </div>
+          <div class="setting-group">
+            <label for="borderWidth">Border Width (px):</label>
+            <input type="number" id="borderWidth" min="0" max="20" value="1" />
+          </div>
+          <div class="setting-group">
+            <label for="imageFit">Image Fit:</label>
+            <select id="imageFit">
+              <option value="fill">Fill Page</option>
+              <option value="fit" selected>Fit to Page</option>
+              <option value="stretch">Stretch to Fill</option>
+            </select>
+          </div>
+          <div class="setting-group">
+            <label for="outputName">PDF Name:</label>
+            <input type="text" id="outputName" placeholder="output.pdf" />
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="preview-section">
-      <h2><i class="fas fa-eye"></i> Preview</h2>
-      <div class="preview-container">
-        <div class="empty-message">No files uploaded yet</div>
+      <div class="preview-section">
+        <h2><i class="fas fa-eye"></i> Image Preview</h2>
+        <div class="preview-container" id="previewContainer">
+          <p class="empty-message">No images selected. Your preview will appear here.</p>
+        </div>
       </div>
-    </div>
+
+      <div class="action-buttons">
+        <button id="clearAll" class="btn btn-secondary"><i class="fas fa-trash"></i> Clear All</button>
+        <button id="convertBtn" class="btn btn-primary" disabled><i class="fas fa-file-export"></i> Convert to PDF</button>
+      </div>
+    </main>
 
     <footer>
-      &copy; 2025 PDF Converter. All rights reserved.
-      <div class="credits">Made by YourName</div>
+      <p>© 2025 Image to PDF Converter. All rights reserved.</p>
+      <p class="credits">Powered by pdf-lib.js & FileSaver.js</p>
     </footer>
   </div>
 
-  <div class="loading-overlay">
+  <div class="loading-overlay" id="loadingOverlay">
     <div class="loading-content">
       <div class="spinner"></div>
-      <p>Processing, please wait...</p>
+      <p>Creating your PDF...</p>
     </div>
   </div>
 
+  <!-- PDF Libraries & Custom Script -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
