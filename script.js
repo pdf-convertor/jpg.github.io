@@ -1,38 +1,19 @@
-const { PDFDocument, rgb } = PDFLib;
+// script.js
 
-const dropArea = document.getElementById('dropArea');
 const fileInput = document.getElementById('fileInput');
-const selectFiles = document.getElementById('selectFiles');
 const previewContainer = document.getElementById('previewContainer');
 const convertBtn = document.getElementById('convertBtn');
-const clearAll = document.getElementById('clearAll');
+const borderStyleInput = document.getElementById('borderStyle');
+const borderColorInput = document.getElementById('borderColor');
+const borderWidthInput = document.getElementById('borderWidth');
 const loadingOverlay = document.getElementById('loadingOverlay');
 
 let images = [];
 
-;[
-  'dragenter','dragover','dragleave','drop'
-].forEach(evt =>
-  dropArea.addEventListener(evt, e => {
-    e.preventDefault();
-    e.stopPropagation();
-  })
-);
-
-dropArea.addEventListener('drop', e => {
-  const files = Array.from(e.dataTransfer.files);
-  handleFiles(files);
-});
-
-selectFiles.addEventListener('click', () => fileInput.click());
-fileInput.addEventListener('change', () => handleFiles(Array.from(fileInput.files)));
-clearAll.addEventListener('click', () => { images = []; updateUI(); });
-
-convertBtn.addEventListener('click', () => createPDF());
-
-function handleFiles(files) {
+fileInput.addEventListener('change', () => {
+  const files = Array.from(fileInput.files);
+  images = [];
   files.forEach(file => {
-    if (!file.type.startsWith('image/')) return;
     const reader = new FileReader();
     reader.onload = () => {
       images.push(reader.result);
@@ -40,78 +21,96 @@ function handleFiles(files) {
     };
     reader.readAsDataURL(file);
   });
-}
+});
 
 function updateUI() {
   previewContainer.innerHTML = '';
   if (!images.length) {
-    previewContainer.innerHTML = '<p class="empty-message">No images selected. Your preview will appear here.</p>';
+    previewContainer.innerHTML = '<p class="empty-message">No images selected...</p>';
     convertBtn.disabled = true;
     return;
   }
   convertBtn.disabled = false;
+
+  const style = borderStyleInput.value;
+  const color = borderColorInput.value;
+  const width = borderWidthInput.value;
+
   images.forEach((src, i) => {
     const div = document.createElement('div');
     div.className = 'image-preview';
+
+    // Border logic
+    if (style === 'none') {
+      div.style.border = 'none';
+    } else {
+      div.style.border = `${width}px ${style} ${color}`;
+    }
+
     const img = document.createElement('img');
     img.src = src;
 
     const btn = document.createElement('div');
     btn.className = 'remove-btn';
-    btn.innerHTML = '×';
+    btn.textContent = '×';
     btn.addEventListener('click', () => {
       images.splice(i, 1);
       updateUI();
     });
 
-    div.append(img, btn);
+    div.appendChild(img);
+    div.appendChild(btn);
     previewContainer.appendChild(div);
   });
 }
 
-async function createPDF() {
+convertBtn.addEventListener('click', async () => {
+  if (!images.length) return;
+
   loadingOverlay.classList.add('active');
+  const pdf = new jspdf.jsPDF();
 
-  const borderStyle = document.getElementById('borderStyle').value;
-  const borderColor = document.getElementById('borderColor').value;
-  const borderWidth = parseInt(document.getElementById('borderWidth').value) || 0;
-  const pageSize = document.getElementById('pageSize').value;
-  const orientation = document.getElementById('pageOrientation').value;
+  const style = borderStyleInput.value;
+  const color = borderColorInput.value;
+  const width = parseInt(borderWidthInput.value);
 
-  const pdfDoc = await PDFDocument.create();
+  for (let i = 0; i < images.length; i++) {
+    const img = new Image();
+    img.src = images[i];
+    await new Promise(resolve => img.onload = resolve);
 
-  for (const src of images) {
-    const imgBytes = await fetch(src).then(r => r.arrayBuffer());
-    const img = src.startsWith('data:image/png') ?
-      await pdfDoc.embedPng(imgBytes) : await pdfDoc.embedJpg(imgBytes);
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
 
-    const page = pdfDoc.addPage();
-    const { width: imgW, height: imgH } = img.scale(1);
-    const { width: pw, height: ph } = page.getSize();
+    const aspectRatio = img.width / img.height;
+    let imgWidth = pageWidth - 20;
+    let imgHeight = imgWidth / aspectRatio;
 
-    const x = (pw - imgW) / 2;
-    const y = (ph - imgH) / 2;
-    page.drawImage(img, { x, y, width: imgW, height: imgH });
-
-    // Only draw border if style isn't 'none' and width > 0
-    if (borderStyle !== 'none' && borderWidth > 0) {
-      const color = rgb(
-        parseInt(borderColor.substr(1,2),16)/255,
-        parseInt(borderColor.substr(3,2),16)/255,
-        parseInt(borderColor.substr(5,2),16)/255
-      );
-      page.drawRectangle({
-        x, y,
-        width: imgW, height: imgH,
-        borderColor: color,
-        borderWidth,
-      });
+    if (imgHeight > pageHeight - 20) {
+      imgHeight = pageHeight - 20;
+      imgWidth = imgHeight * aspectRatio;
     }
+
+    const x = (pageWidth - imgWidth) / 2;
+    const y = (pageHeight - imgHeight) / 2;
+
+    // Add image
+    pdf.addImage(img, 'JPEG', x, y, imgWidth, imgHeight);
+
+    // Add border if not none
+    if (style !== 'none') {
+      pdf.setDrawColor(color);
+      pdf.setLineWidth(width);
+      pdf.setLineDash(style === 'dashed' ? [3.0, 3.0] : []);
+      pdf.rect(x, y, imgWidth, imgHeight);
+    }
+
+    if (i < images.length - 1) pdf.addPage();
   }
 
-  const pdfBytes = await pdfDoc.save();
-  const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-  saveAs(blob, document.getElementById('outputName').value || 'output.pdf');
-
+  pdf.save('converted.pdf');
   loadingOverlay.classList.remove('active');
-}
+});
+
+// Initial state
+updateUI();
