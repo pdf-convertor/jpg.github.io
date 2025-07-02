@@ -161,5 +161,14 @@
 <div class="elfsight-app-ac25300a-d38b-4e48-bb94-053c2c5082d3" data-elfsight-app-lazy></div>
     <!-- Your main script -->
     <script src="script.js"></script>
+    <script>
+  const url = "https://api.countapi.xyz/hit/pdf-convertor/visits";
+  fetch(url)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById("visitCount").textContent = data.value;
+    })
+    .catch(console.error);
+</script>
 </body>
 </html>
