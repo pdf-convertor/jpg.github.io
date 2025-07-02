@@ -144,8 +144,7 @@
 </footer>
 <!-- Visitor Counter Script -->
 <script>
-    fetch('https://api.countapi.xyz/hit/pdf-convertor.github.io/visits')
-        .then(res => res.json())
+      .then(res => res.json())
         .then(res => {
             document.getElementById('visitorCount').innerText = `Visitors: ${res.value}`;
         })
