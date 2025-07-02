@@ -129,7 +129,6 @@
                 </button>
             </div>
         </main>
-
         <footer>
             <p>© 2023 Image to PDF Converter. All rights reserved.</p>
             <p class="credits">Powered by pdf-lib.js & FileSaver.js</p>
@@ -138,12 +137,8 @@
             </div>
         </footer>
     </div>
-
     <!-- Visitor Counter Script -->
-    <script>
-    document.getElementById('visitorCount').innerText = `Visitors: ${res.value}`;
-        })
-        .catch(err => {
+           .catch(err => {
             document.getElementById('visitorCount').innerText = 'Visitors: Welcome';
         });
     </script>
