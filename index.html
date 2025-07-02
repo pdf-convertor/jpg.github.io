@@ -16,9 +16,14 @@
     <link rel="icon" href="favicon.png" type="image/png" />
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
 <body>
-    <!-- Countdown Timer -->
-<div id="countdown" style="font-size: 24px; font-weight: bold; margin: 20px;"></div>
-    <div class="container">
+    <script>
+  fetch('https://api.countapi.xyz/hit/pdf-convertor.github.io/visits')
+    .then(res => res.json())
+    .then(res => {
+      document.getElementById('visitorCount').innerText = `Visitors: ${res.value}`;
+    });
+</script>
+      <div class="container">
         <header>
             <h1><i class="fas fa-file-pdf"></i> Image to PDF Converter</h1>
             <p>Convert your images to high-quality PDFs with advanced customization options</p>
