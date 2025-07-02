@@ -2,22 +2,22 @@
 <html lang="en">
 <head>
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-BT0SY6PW39"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-BT0SY6PW39');
-</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BT0SY6PW39"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BT0SY6PW39');
+    </script>
     <meta name="description" content="Convert PDF files online for free. Simple, fast, and easy-to-use PDF converter tool.">
     <meta name="msvalidate.01" content="E4C9A00441EA00A7A9AC6393F3048089" />
     <meta name="google-site-verification" content="fAuI_O4zzJK_1ouXmRKqWuYly9fwETgusTVm4saAnKQ" />
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Image to PDF Converter | Advanced PDF Tools</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <link rel="icon" href="favicon.png" type="image/png" />
@@ -36,13 +36,12 @@
                 <h3>Drag & Drop Images Here</h3>
                 <p>or</p>
                 <button id="selectFiles" class="btn">Select Images</button>
-                <input type="file" id="fileInput" accept="image/*" multiple style="display: none;">
+                <input type="file" id="fileInput" accept="image/*" multiple style="display: none;" />
             </div>
 
             <div class="settings-panel">
                 <h2><i class="fas fa-cog"></i> PDF Settings</h2>
                 <div class="settings-grid">
-                    <!-- Settings form fields -->
                     <div class="setting-group">
                         <label for="pageSize">Page Size:</label>
                         <select id="pageSize">
@@ -62,7 +61,7 @@
                     </div>
                     <div class="setting-group">
                         <label for="marginSize">Margin (mm):</label>
-                        <input type="number" id="marginSize" min="0" max="50" value="10">
+                        <input type="number" id="marginSize" min="0" max="50" value="10" />
                     </div>
                     <div class="setting-group">
                         <label for="borderStyle">Border Style:</label>
@@ -75,11 +74,11 @@
                     </div>
                     <div class="setting-group">
                         <label for="borderColor">Border Color:</label>
-                        <input type="color" id="borderColor" value="#cccccc">
+                        <input type="color" id="borderColor" value="#cccccc" />
                     </div>
                     <div class="setting-group">
                         <label for="borderWidth">Border Width (px):</label>
-                        <input type="number" id="borderWidth" min="0" max="20" value="1">
+                        <input type="number" id="borderWidth" min="0" max="20" value="1" />
                     </div>
                     <div class="setting-group">
                         <label for="imageFit">Image Fit:</label>
@@ -106,7 +105,7 @@
                     </div>
                     <div class="setting-group">
                         <label for="outputName">PDF Name:</label>
-                        <input type="text" id="outputName" placeholder="output.pdf">
+                        <input type="text" id="outputName" placeholder="output.pdf" />
                     </div>
                 </div>
             </div>
@@ -131,7 +130,10 @@
         <footer>
             <p>© 2023 Image to PDF Converter. All rights reserved.</p>
             <p class="credits">Powered by pdf-lib.js & FileSaver.js</p>
-            <div id="visitorCount" style="text-align: center; font-size: 16px; font-weight: bold; margin-top: 10px;">
+            <div
+                id="visitorCount"
+                style="text-align: center; font-size: 16px; font-weight: bold; margin-top: 10px;"
+            >
                 Visitors: Loading...
             </div>
         </footer>
@@ -144,31 +146,20 @@
         </div>
     </div>
 
-    <!-- Visitor Counter Script -->
+    <!-- Visitor Counter Script using CountAPI -->
     <script>
         fetch('https://api.countapi.xyz/hit/pdf-convertor.github.io/visits')
-            .then(res => res.json())
-            .then(res => {
+            .then((res) => res.json())
+            .then((res) => {
                 document.getElementById('visitorCount').innerText = `Visitors: ${res.value}`;
             })
-            .catch(err => {
+            .catch((err) => {
                 console.error('Visitor counter failed:', err);
                 document.getElementById('visitorCount').innerText = 'Visitors: Welcome';
             });
     </script>
-<!-- Elfsight Visitor Counter | Untitled Visitor Counter -->
-<script src="https://static.elfsight.com/platform/platform.js" async></script>
-<div class="elfsight-app-ac25300a-d38b-4e48-bb94-053c2c5082d3" data-elfsight-app-lazy></div>
+
     <!-- Your main script -->
     <script src="script.js"></script>
-    <script>
-  const url = "https://api.countapi.xyz/hit/pdf-convertor/visits";
-  fetch(url)
-    .then(res => res.json())
-    .then(data => {
-      document.getElementById("visitCount").textContent = data.value;
-    })
-    .catch(console.error);
-</script>
 </body>
 </html>
