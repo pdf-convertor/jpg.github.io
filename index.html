@@ -144,8 +144,7 @@
 </footer>
 <!-- Visitor Counter Script -->
 <script>
-      .then(res => res.json())
-        .then(res => {
+      .then(res => {
             document.getElementById('visitorCount').innerText = `Visitors: ${res.value}`;
         })
         .catch(err => {
