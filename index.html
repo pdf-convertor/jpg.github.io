@@ -141,10 +141,7 @@
 
     <!-- Visitor Counter Script -->
     <script>
-    fetch('https://api.countapi.xyz/hit/yourdomain.com/visits') // Replace with your actual domain or key
-        .then(res => res.json())
-        .then(res => {
-            document.getElementById('visitorCount').innerText = `Visitors: ${res.value}`;
+    document.getElementById('visitorCount').innerText = `Visitors: ${res.value}`;
         })
         .catch(err => {
             document.getElementById('visitorCount').innerText = 'Visitors: Welcome';
