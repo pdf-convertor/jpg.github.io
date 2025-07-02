@@ -129,6 +129,7 @@
                 </button>
             </div>
         </main>
+
         <footer>
             <p>© 2023 Image to PDF Converter. All rights reserved.</p>
             <p class="credits">Powered by pdf-lib.js & FileSaver.js</p>
@@ -137,10 +138,22 @@
             </div>
         </footer>
     </div>
+
     <!-- Visitor Counter Script -->
-           .catch(err => {
-            document.getElementById('visitorCount').innerText = 'Visitors: Welcome';
-            </script>
+    <script>
+      // Simple visitor counter using localStorage (works offline per browser)
+      (function(){
+          let count = localStorage.getItem('visitorCount');
+          if (!count) {
+              count = 1;
+          } else {
+              count = parseInt(count) + 1;
+          }
+          localStorage.setItem('visitorCount', count);
+          document.getElementById('visitorCount').innerText = 'Visitors: ' + count;
+      })();
+    </script>
+
     <!-- Your main app logic -->
     <script src="script.js"></script>
 </body>
