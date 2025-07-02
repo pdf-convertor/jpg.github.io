@@ -12,18 +12,11 @@
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-</head>
     <link rel="icon" href="favicon.png" type="image/png" />
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
+</head>
 <body>
-    <script>
-  fetch('https://api.countapi.xyz/hit/pdf-convertor.github.io/visits')
-    .then(res => res.json())
-    .then(res => {
-      document.getElementById('visitorCount').innerText = `Visitors: ${res.value}`;
-    });
-</script>
-      <div class="container">
+    <div class="container">
         <header>
             <h1><i class="fas fa-file-pdf"></i> Image to PDF Converter</h1>
             <p>Convert your images to high-quality PDFs with advanced customization options</p>
@@ -40,8 +33,8 @@
 
             <div class="settings-panel">
                 <h2><i class="fas fa-cog"></i> PDF Settings</h2>
-                
                 <div class="settings-grid">
+                    <!-- Settings form fields -->
                     <div class="setting-group">
                         <label for="pageSize">Page Size:</label>
                         <select id="pageSize">
@@ -51,7 +44,6 @@
                             <option value="auto">Auto (Fit to Image)</option>
                         </select>
                     </div>
-
                     <div class="setting-group">
                         <label for="pageOrientation">Orientation:</label>
                         <select id="pageOrientation">
@@ -60,12 +52,10 @@
                             <option value="auto">Auto (Based on Image)</option>
                         </select>
                     </div>
-
                     <div class="setting-group">
                         <label for="marginSize">Margin (mm):</label>
                         <input type="number" id="marginSize" min="0" max="50" value="10">
                     </div>
-
                     <div class="setting-group">
                         <label for="borderStyle">Border Style:</label>
                         <select id="borderStyle">
@@ -75,17 +65,14 @@
                             <option value="shadow">Shadow Effect</option>
                         </select>
                     </div>
-
                     <div class="setting-group">
                         <label for="borderColor">Border Color:</label>
                         <input type="color" id="borderColor" value="#cccccc">
                     </div>
-
                     <div class="setting-group">
                         <label for="borderWidth">Border Width (px):</label>
                         <input type="number" id="borderWidth" min="0" max="20" value="1">
                     </div>
-
                     <div class="setting-group">
                         <label for="imageFit">Image Fit:</label>
                         <select id="imageFit">
@@ -94,7 +81,6 @@
                             <option value="stretch">Stretch to Fill</option>
                         </select>
                     </div>
-
                     <div class="setting-group">
                         <label for="pageSpread">Page Spread:</label>
                         <select id="pageSpread">
@@ -102,7 +88,6 @@
                             <option value="double">Double Page Spread</option>
                         </select>
                     </div>
-
                     <div class="setting-group">
                         <label for="compression">Compression:</label>
                         <select id="compression">
@@ -111,7 +96,6 @@
                             <option value="low">Small File Size</option>
                         </select>
                     </div>
-
                     <div class="setting-group">
                         <label for="outputName">PDF Name:</label>
                         <input type="text" id="outputName" placeholder="output.pdf">
@@ -139,6 +123,9 @@
         <footer>
             <p>© 2023 Image to PDF Converter. All rights reserved.</p>
             <p class="credits">Powered by pdf-lib.js & FileSaver.js</p>
+            <div id="visitorCount" style="text-align: center; font-size: 16px; font-weight: bold; margin-top: 10px;">
+                Visitors: Loading...
+            </div>
         </footer>
     </div>
 
@@ -149,6 +136,20 @@
         </div>
     </div>
 
+    <!-- Visitor Counter Script -->
+    <script>
+        fetch('https://api.countapi.xyz/hit/pdf-convertor.github.io/visits')
+            .then(res => res.json())
+            .then(res => {
+                document.getElementById('visitorCount').innerText = `Visitors: ${res.value}`;
+            })
+            .catch(err => {
+                console.error('Visitor counter failed:', err);
+                document.getElementById('visitorCount').innerText = 'Visitors: N/A';
+            });
+    </script>
+
+    <!-- Your main script -->
     <script src="script.js"></script>
 </body>
 </html>
