@@ -9,19 +9,22 @@
       gtag('js', new Date());
       gtag('config', 'G-BT0SY6PW39');
     </script>
+
     <meta name="description" content="Convert PDF files online for free. Simple, fast, and easy-to-use PDF converter tool.">
     <meta name="msvalidate.01" content="E4C9A00441EA00A7A9AC6393F3048089" />
     <meta name="google-site-verification" content="fAuI_O4zzJK_1ouXmRKqWuYly9fwETgusTVm4saAnKQ" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Image to PDF Converter | Advanced PDF Tools</title>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <link rel="icon" href="favicon.png" type="image/png" />
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -126,30 +129,29 @@
                 </button>
             </div>
         </main>
+
         <footer>
             <p>© 2023 Image to PDF Converter. All rights reserved.</p>
             <p class="credits">Powered by pdf-lib.js & FileSaver.js</p>
-            <div
-                id="visitorCount"
-                style="text-align: center; font-size: 16px; font-weight: bold; margin-top: 10px;"
-            >
+            <div id="visitorCount" style="text-align: center; font-size: 16px; font-weight: bold; margin-top: 10px;">
                 Visitors: Loading...
             </div>
-      <footer>
-    <p>© 2023 Image to PDF Converter. All rights reserved.</p>
-    <p class="credits">Powered by pdf-lib.js & FileSaver.js</p>
-    <div id="visitorCount" style="text-align: center; font-size: 16px; font-weight: bold; margin-top: 10px;">
-        Visitors: Loading...
+        </footer>
     </div>
-</footer>
-<!-- Visitor Counter Script -->
-<script>
-      .then(res => {
+
+    <!-- Visitor Counter Script -->
+    <script>
+    fetch('https://api.countapi.xyz/hit/yourdomain.com/visits') // Replace with your actual domain or key
+        .then(res => res.json())
+        .then(res => {
             document.getElementById('visitorCount').innerText = `Visitors: ${res.value}`;
         })
         .catch(err => {
-                 document.getElementById('visitorCount').innerText = 'Visitors: Welcome';
-     <!-- Your main script -->
+            document.getElementById('visitorCount').innerText = 'Visitors: Welcome';
+        });
+    </script>
+
+    <!-- Your main app logic -->
     <script src="script.js"></script>
 </body>
 </html>
