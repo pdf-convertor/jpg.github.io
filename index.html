@@ -136,29 +136,22 @@
             >
                 Visitors: Loading...
             </div>
-        </footer>
-    </div>
+        <footer>
+  ...
+  <div id="visitorCount">Visitors: Loading...</div>
+</footer>
 
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="loading-content">
-            <div class="spinner"></div>
-            <p>Creating your PDF...</p>
-        </div>
-    </div>
-
-    <!-- Visitor Counter Script using CountAPI -->
-    <script>
-        fetch('https://api.countapi.xyz/hit/pdf-convertor.github.io/visits')
-            .then((res) => res.json())
-            .then((res) => {
-                document.getElementById('visitorCount').innerText = `Visitors: ${res.value}`;
-            })
-            .catch((err) => {
-                console.error('Visitor counter failed:', err);
-                document.getElementById('visitorCount').innerText = 'Visitors: Welcome';
-            });
-    </script>
-
+<script>
+  fetch('https://api.countapi.xyz/hit/pdf-convertor.github.io/visits')
+    .then(res => res.json())
+    .then(res => {
+      document.getElementById('visitorCount').innerText = `Visitors: ${res.value}`;
+    })
+    .catch(err => {
+      console.error('Visitor counter failed:', err);
+      document.getElementById('visitorCount').innerText = 'Visitors: Welcome';
+    });
+</script>
     <!-- Your main script -->
     <script src="script.js"></script>
 </body>
