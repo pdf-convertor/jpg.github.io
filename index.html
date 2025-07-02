@@ -126,7 +126,6 @@
                 </button>
             </div>
         </main>
-
         <footer>
             <p>© 2023 Image to PDF Converter. All rights reserved.</p>
             <p class="credits">Powered by pdf-lib.js & FileSaver.js</p>
@@ -136,21 +135,38 @@
             >
                 Visitors: Loading...
             </div>
-        <footer>
-  ...
-  <div id="visitorCount">Visitors: Loading...</div>
+      <footer>
+    <p>© 2023 Image to PDF Converter. All rights reserved.</p>
+    <p class="credits">Powered by pdf-lib.js & FileSaver.js</p>
+    <div id="visitorCount" style="text-align: center; font-size: 16px; font-weight: bold; margin-top: 10px;">
+        Visitors: Loading...
+    </div>
 </footer>
-
+<!-- Visitor Counter Script -->
 <script>
-  fetch('https://api.countapi.xyz/hit/pdf-convertor.github.io/visits')
-    .then(res => res.json())
-    .then(res => {
-      document.getElementById('visitorCount').innerText = `Visitors: ${res.value}`;
-    })
-    .catch(err => {
-      console.error('Visitor counter failed:', err);
-      document.getElementById('visitorCount').innerText = 'Visitors: Welcome';
-    });
+    fetch('https://api.countapi.xyz/hit/pdf-convertor.github.io/visits')
+        .then(res => res.json())
+        .then(res => {
+            document.getElementById('visitorCount').innerText = `Visitors: ${res.value}`;
+        })
+        .catch(err => {
+            console.error('Visitor counter failed:', err);
+            document.getElementById('visitorCount').innerText = 'Visitors: Welcome';
+        });
+</script>
+
+
+<!-- Visitor Counter Script -->
+<script>
+    fetch('https://api.countapi.xyz/hit/pdf-convertor.github.io/visits')
+        .then(res => res.json())
+        .then(res => {
+            document.getElementById('visitorCount').innerText = `Visitors: ${res.value}`;
+        })
+        .catch(err => {
+            console.error('Visitor counter failed:', err);
+            document.getElementById('visitorCount').innerText = 'Visitors: Welcome';
+        });
 </script>
     <!-- Your main script -->
     <script src="script.js"></script>
